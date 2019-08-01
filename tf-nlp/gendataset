@@ -1,7 +1,19 @@
-(C) Copyright 2019 Abhishek Choudhary, Dr Srija Katta
+#(C) Copyright 2019 Abhishek Choudhary, Dr Srija Katta
+# GNU GPL v2 license
 
 sudo apt install html2text
+rm -rf ayeai.txt
 wget "https://en.wikipedia.org/wiki/Category:Artificial_intelligence" -O catai_1
 wget "https://en.wikipedia.org/w/index.php?title=Category:Artificial_intelligence&pagefrom=Intelligent+word+recognition#mw-pages" -O catai_2
 cat catai_* | tr '"' '\n' | grep "^/wiki/" | grep -v ':' > ailist
-for n in $(cat ailist | head -9); do b=$(basename $n); curl https://en.wikipedia.org/$n | html2text -utf8 -o $b; done
+for n in $(cat ailist)
+do
+    b=$(basename $n)
+    curl https://en.wikipedia.org/$n | html2text -utf8 -o $b
+    cat $b | sed "s/^\*\*\*/===\n\*\*\*/g" \
+        | sed "s/\[edit\]//g" \
+        | sed "/^$/d" \
+        | awk -v topic=$b '/./ {print $0}; /^\*\*\*/ {print "What is / are " $0 " in / of " topic "?\n"}' \
+        | tr -s "*" \
+            >> ayeai.txt
+done
