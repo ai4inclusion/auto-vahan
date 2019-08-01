@@ -1,0 +1,7 @@
+(C) Copyright 2019 Abhishek Choudhary, Dr Srija Katta
+
+sudo apt install html2text
+wget "https://en.wikipedia.org/wiki/Category:Artificial_intelligence" -O catai_1
+wget "https://en.wikipedia.org/w/index.php?title=Category:Artificial_intelligence&pagefrom=Intelligent+word+recognition#mw-pages" -O catai_2
+cat catai_* | tr '"' '\n' | grep "^/wiki/" | grep -v ':' > ailist
+for n in $(cat ailist | head -9); do b=$(basename $n); curl https://en.wikipedia.org/$n | html2text -utf8 -o $b; done
