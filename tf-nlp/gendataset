@@ -6,14 +6,15 @@ rm -rf ayeai.txt
 wget "https://en.wikipedia.org/wiki/Category:Artificial_intelligence" -O catai_1
 wget "https://en.wikipedia.org/w/index.php?title=Category:Artificial_intelligence&pagefrom=Intelligent+word+recognition#mw-pages" -O catai_2
 cat catai_* | tr '"' '\n' | grep "^/wiki/" | grep -v ':' > ailist
-for n in $(cat ailist)
+for n in $(cat ailist | head -2)
 do
     b=$(basename $n)
-    curl https://en.wikipedia.org/$n | html2text -utf8 -o $b
+    curl https://en.wikipedia.org/$n | html2text -ascii -nobs -style compact -o $b
     cat $b | sed "s/^\*\*\*/===\n\*\*\*/g" \
         | sed "s/\[edit\]//g" \
         | sed "/^$/d" \
         | awk -v topic=$b '/./ {print $0}; /^\*\*\*/ {print "What is / are " $0 " in / of " topic "?\n"}' \
         | tr -s "*" \
+        | tr -d '\200-\377' \
             >> ayeai.txt
-done
+                                                                                                                                                        13,2          Top
