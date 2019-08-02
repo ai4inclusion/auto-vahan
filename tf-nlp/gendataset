@@ -17,4 +17,4 @@ do
         | tr -s "*" \
         | tr -d '\200-\377' \
             >> ayeai.txt
-done                                                                                                                                                        13,2          Top
+done
