@@ -1,0 +1,13 @@
+#(C) Copyright 2019 Abhishek Choudhary, Dr Srija Katta
+
+# Distributed under GNU GPL v2 license only
+
+git clone https://github.com/Conchylicultor/DeepQA
+wget https://raw.githubusercontent.com/ai4inclusion/auto-vahan/master/tf-nlp/gendataset
+chmod ./gendataset 
+chmod 777 ./gendataset 
+./gendataset 
+cp ayeai.txt DeepQA/data/lightweight/
+cd DeepQA/
+./main.py --corpus lightweight --datasetTag ayeai
+./main.py --corpus lightweight --datasetTag ayeai --test interactive
